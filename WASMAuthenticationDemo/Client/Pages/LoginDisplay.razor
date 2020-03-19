@@ -1,0 +1,28 @@
+﻿@inject CurrentUserInfo currentUser
+@*Need to inject this to ensure that the user data gets loaded.
+    This is here to ensure AuthService is loaded so the authorize event can be received*@
+@inject IClientUserService _userService
+    <AuthorizeView>
+        <Authorized>
+            <a href="#">
+                Welcome @currentUser.CurrentUser.FirstName!
+            </a>
+            <a href="logout" class="ml-4"> Log out</a>
+        </Authorized>
+        <NotAuthorized>
+            <a href="Login">Log in</a>
+            <a href="register">Register</a>
+        </NotAuthorized>
+    </AuthorizeView>
+@code {
+    protected override void OnInitialized()
+    {
+        currentUser.PropertyChanged += CurrentUserInfoChanged;
+
+    }
+
+    private void CurrentUserInfoChanged(object sender, EventArgs e)
+    {
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# BL0001: Component parameter should have public setters.
+dotnet_diagnostic.BL0001.severity = none
+
+# BL0002: Component has multiple CaptureUnmatchedValues parameters
+dotnet_diagnostic.BL0002.severity = none
+
+# BL0003: Component parameter with CaptureUnmatchedValues has the wrong type
+dotnet_diagnostic.BL0003.severity = none

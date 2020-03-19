@@ -1,0 +1,59 @@
+﻿@page "/register"
+@inject IClientUserService  _clientUserService
+@inject NavigationManager NavigationMgr
+@if (showRegistration)
+{
+
+    <h3>Register User</h3>
+    <EditForm Model="@thisUser" OnValidSubmit="SubmitRegistration">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="row form-group">
+            <div class="col-6">
+                <input class="form-control" type="text" @bind-value="thisUser.FirstName" placeholder="First Name" />
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="text" @bind-value="thisUser.LastName" placeholder="LastName Name" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-6">
+                <input class="form-control" type="text" @bind-value="thisUser.UserName" placeholder="UserName" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-6">
+                <input class="form-control" type="password" @bind-value="thisUser.Password" placeholder="Password" />
+            </div>
+            <div class="col-6">
+                <input class="form-control" type="password" @bind-value="thisUser.ConfirmPassword" placeholder="Confirm Password" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <button class="btn btn-primary" type="submit">Register</button>
+        </div>
+    </EditForm>
+}
+else
+{
+    <p class="mt-3">Registering . . . </p>
+}
+@code {
+    private UserRegistration thisUser = new UserRegistration();
+    private bool showRegistration = true;
+
+    private async Task SubmitRegistration()
+    {
+        Task<LoginResult> t = _clientUserService.RegisterUser(thisUser);
+        showRegistration = false;
+        LoginResult lr = await t;
+        if (string.IsNullOrEmpty(lr.Token))
+        {
+            showRegistration = true;
+        }
+        else
+        {
+            NavigationMgr.NavigateTo("/");
+        }
+    }
+}
